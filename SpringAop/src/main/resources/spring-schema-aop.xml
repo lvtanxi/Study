@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+    <context:component-scan base-package="com.lv.aop.schema"/>
+    <bean id="moocAspect" class="com.lv.aop.schema.MoocAspect"/>
+    <bean id="aspectBiz" class="com.lv.aop.schema.advice.biz.AspectBiz"/>
+    <bean id="concurrentOperationExecutor" class="com.lv.aop.schema.advices.ConcurrentOperationExcutor">
+        <property name="maxRetries" value="3"/>
+        <property name="order" value="100"/>
+    </bean>
+
+    <aop:config>
+        <aop:aspect id="moocAspectAop" ref="moocAspect">
+            <aop:pointcut id="moocPointcut"
+                          expression="execution(* com.lv.aop.schema.advice.biz.*Biz.*(..))"/>
+            <aop:before method="beforeM" pointcut-ref="moocPointcut"/>
+            <aop:after-returning method="afterReturningM" pointcut-ref="moocPointcut"/>
+            <aop:after-throwing method="afterThrowingM" pointcut-ref="moocPointcut"/>
+            <aop:after method="afterM" pointcut-ref="moocPointcut"/>
+            <aop:around method="aroundM" pointcut-ref="moocPointcut"/>
+            <aop:around method="afterInitM"
+                        pointcut="execution(* com.lv.aop.schema.advice.biz.AspectBiz.init(String,int)) and args(bizName,time))"
+                        arg-names="proceedingJoinPoint,bizName,time"/>
+
+          <!--  <aop:declare-parents types-matching="com.lv.aop.schema.advice.biz.*(+)"
+                                 implement-interface="com.lv.aop.schema.Fit"
+                                 default-impl="com.lv.aop.schema.FitImpl"/>-->
+        </aop:aspect>
+        <aop:aspect id="concurrentOperationRetry" ref="concurrentOperationExecutor">
+            <aop:pointcut id="idempotentOperation" expression="execution(* com.lv.aop.schema.advices.service.*.*(..))"/>
+            <aop:around method="dooncurrentOperation" pointcut-ref="idempotentOperation"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
