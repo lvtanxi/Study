@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--配置整个mybatis过程-->
     <!--1：配置数据库相关参数-->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -46,6 +47,25 @@
         <!-- <property name="filters" value="stat" /> -->
         <property name="filters" value="mergeStat"/>
     </bean>
+
+    <!-- 配置druid监控spring jdbc -->
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+          scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>org.seckill.service.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor"
+                     pointcut-ref="druid-stat-pointcut" />
+    </aop:config>
     <!--3：配置sqlSessionFactory对象-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--注入数据库连接池-->
@@ -56,6 +76,14 @@
         <property name="typeAliasesPackage" value="org.seckill.entity"/>
         <!--扫码sql配置文件:mapper需要的xml文件-->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!--开启缓存-->
+        <property name="configurationProperties">
+            <props>
+                <prop key="cacheEnabled">true</prop>
+                <prop key="lazyLoadingEnabled">false</prop>
+                <prop key="aggressiveLazyLoading">true</prop>
+            </props>
+        </property>
     </bean>
     <!--4:配置扫码Dao接口包,动态实现Dao接口并注入到Spring容器中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

@@ -32,7 +32,8 @@
             name,
             start_time,
             end_time,
-            create_time
+            create_time,
+            number
         FROM seckill
         ORDER BY create_time DESC
         LIMIT #{offset}, #{limit}

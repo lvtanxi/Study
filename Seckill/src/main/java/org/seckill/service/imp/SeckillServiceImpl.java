@@ -13,6 +13,7 @@ import org.seckill.exception.SeckillException;
 import org.seckill.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -38,7 +39,9 @@ public class SeckillServiceImpl implements SeckillService {
     //MD5
     private static final String slat = "asdfasdfdfhjrwrsdf13fg'jasopdjifpoiasdfo";
 
+    @Cacheable(value = "getSeckillList")
     public List<Seckill> getSeckillList() {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>");
         return mSeckillDao.queryAll(0, 5);
     }
 
