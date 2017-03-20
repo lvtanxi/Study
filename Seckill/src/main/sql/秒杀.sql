@@ -28,6 +28,9 @@ VALUES
   ('6600元秒杀mac book pro',300,'2016-01-01 00:00:00','2016-01-02 00:00:00'),
   ('7000元秒杀iMac',400,'2016-01-01 00:00:00','2016-01-02 00:00:00');
 
+
+SELECT * FROM seckill;
+
 -- 秒杀成功明细表
 -- 用户登录认证相关信息(简化为手机号)
 
@@ -46,3 +49,45 @@ CREATE TABLE success_killed(
 
 
   -- SHOW CREATE TABLE seckill;#显示表的创建信息
+
+-- 秒杀执行存储过程
+-- 1：存储过程优化：事务行级锁持有时间
+-- 2：不要过度依赖存储过程
+-- 3：简单的逻辑可以应用存储过程
+-- 4：注意DELIMITER的使用，不然会失败
+
+DELIMITER $$
+CREATE PROCEDURE excuteSeckill(IN fadeSeckillId BIGINT,IN fadeUserPhone BIGINT,IN fadeKillTime TIMESTAMP ,OUT fadeResult INT)
+	BEGIN
+		DECLARE insert_count INT DEFAULT 0;
+		START TRANSACTION ;
+		INSERT ignore success_killed VALUES(fadeSeckillId,fadeUserPhone,0,fadeKillTime);  -- 先插入购买明细
+		SELECT ROW_COUNT() INTO insert_count;
+		IF(insert_count = 0) THEN
+			ROLLBACK ;
+			SET fadeResult = -1;   -- 重复秒杀
+		ELSEIF(insert_count < 0) THEN
+			ROLLBACK ;
+			SET fadeResult = -2;   -- 内部错误
+		ELSE   -- 已经插入购买明细，接下来要减少库存
+			UPDATE seckill SET number = number -1 WHERE seckill_id = fadeSeckillId AND start_time < fadeKillTime AND end_time > fadeKillTime AND number > 0;
+			SELECT ROW_COUNT() INTO insert_count;
+			IF (insert_count = 0)  THEN
+				ROLLBACK ;
+				SET fadeResult = 0;   -- 库存没有了，代表秒杀已经关闭
+			ELSEIF (insert_count < 0) THEN
+				ROLLBACK ;
+				SET fadeResult = -2;   -- 内部错误
+			ELSE
+				COMMIT ;    -- 秒杀成功，事务提交
+				SET  fadeResult = 1;   -- 秒杀成功返回值为1
+			END IF;
+		END IF;
+	END
+$$
+
+DELIMITER ;
+
+SET @fadeResult = -3;
+CALL excuteSeckill(1001,13813813822,NOW(),@fadeResult);
+SELECT @fadeResult;

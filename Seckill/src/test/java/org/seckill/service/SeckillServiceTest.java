@@ -40,7 +40,7 @@ public class SeckillServiceTest {
 
     @Test
     public void exportSeckilUrl() throws Exception {
-        Export export = mSeckillService.exportSeckilUrl(1000);
+        Export export = mSeckillService.exportSeckilUrl(1001);
         mLogger.info("export={}",export);
         //export=Export{exposed=true, md5='a9504693ee3ba377c60b66eeb7893b49', seckillId=1000, now=0, start=0, end=0}
     }
@@ -60,8 +60,22 @@ public class SeckillServiceTest {
         Export export = mSeckillService.exportSeckilUrl(1000);
         if(null!=export&&export.isExposed()){
             try {
-                SeckillExecution seckillExecution = mSeckillService.executeSeckill(1000, 15202842975L,export.getMd5());
+                SeckillExecution seckillExecution = mSeckillService.executeSeckill(1000, 1502842975L,export.getMd5());
                 mLogger.info("seckillExecution={}",seckillExecution);
+            } catch (SeckillException e) {
+                mLogger.error("export={}",e);
+            }
+        }else {
+            mLogger.warn("export={}","秒殺未開啓");
+        }
+    }
+    @Test
+    public void testX2()throws Exception {
+        Export export = mSeckillService.exportSeckilUrl(1001);
+        if(null!=export&&export.isExposed()){
+            try {
+                SeckillExecution execution = mSeckillService.executeSeckillProcedure(export.getSeckillId(), 13011184049L, export.getMd5());
+                mLogger.info("seckillExecution={}",execution);
             } catch (SeckillException e) {
                 mLogger.error("export={}",e);
             }

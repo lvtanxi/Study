@@ -5,6 +5,7 @@ import org.seckill.entity.Seckill;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Date: 2017-03-16
@@ -27,4 +28,8 @@ public interface SeckillDao {
      * 多个形参用@Param
      */
     List<Seckill> queryAll(@Param("offset") int offset, @Param("limit")int limit);
+    /**
+     * 利用存储过程，减库存
+     */
+    void killByProcedure(Map<String,Object> paramMap);
 }
