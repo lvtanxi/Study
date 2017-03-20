@@ -15,6 +15,7 @@ import org.seckill.exception.SeckillException;
 import org.seckill.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,7 @@ public class SeckillServiceImpl implements SeckillService {
     //MD5
     private static final String slat = "asdfasdfdfhjrwrsdf13fg'jasopdjifpoiasdfo";
 
-    @Cacheable(value = "getSeckillList")
+    @Cacheable("provinceCities")
     public List<Seckill> getSeckillList() {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>");
         return mSeckillDao.queryAll(0, 5);
@@ -81,6 +82,7 @@ public class SeckillServiceImpl implements SeckillService {
      * 3：不是所有的方法都需要事务。如只有一条修改操作，只读操作不需要事务控制
      */
     @Transactional
+    @CacheEvict(value = { "provinceCities"}, allEntries = true)
     public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws RepeatKillException, SeckillCloseException, SeckillException {
         if (md5 == null || !md5.equals(getMd5(seckillId)))
             throw new SeckillException("seckill data rewrite");
@@ -98,6 +100,7 @@ public class SeckillServiceImpl implements SeckillService {
                     throw new RepeatKillException("seckill repeated");
                 } else {
                     SuccesKilled succesKilled = mSuccesKilledDao.queryByIdWithSeckill(seckillId, userPhone);
+
                     return new SeckillExecution(seckillId, SeckillStatEnum.SUCCESS, succesKilled);
                 }
             }
@@ -112,6 +115,7 @@ public class SeckillServiceImpl implements SeckillService {
         }
     }
 
+    @CacheEvict(value = { "provinceCities"}, allEntries = true)
     public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5) {
         if (md5 == null || !md5.equals(getMd5(seckillId)))
             return new SeckillExecution(seckillId, SeckillStatEnum.DATA_REWRITE);

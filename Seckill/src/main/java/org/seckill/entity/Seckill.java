@@ -1,5 +1,6 @@
 package org.seckill.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * Time: 10:13
  * Description:
  */
-public class Seckill {
+public class Seckill implements Serializable{
     private long seckillId;
     private String name;
     private int number;
