@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes
 @Aspect
 @Component
 class HttpAspect {
-    @Pointcut("execution(public * com.lv.controller.MyUserController.*(..))")
+    @Pointcut("execution(public * com.lv.controller..*(..))")
     fun log() {
     }
 

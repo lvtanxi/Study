@@ -18,7 +18,7 @@
     </div>
     <div class="rightCont">
         <p class="g_title fix">内容列表 <a class="btn03" href="#">新 增</a>&nbsp;&nbsp;&nbsp;&nbsp;<a
-                class="btn03" href="#">删 除</a></p>
+                class="btn03" href="#" onclick="dodeleteBatch()">删 除</a></p>
         <table class="tab1">
             <tbody>
             <tr>
@@ -47,7 +47,7 @@
                     <th>内容</th>
                     <th width="160px">操作</th>
                 </tr>
-                <tr v-for="(message,index) in messages" :class="{test:(index+1)%2==0}">
+                <tr v-for="(message,index) in  pager.list" :class="{test:(index+1)%2==0}">
                     <td><input type="checkbox" v-text="message.id" v-model="bos"
                                :value="message.id"/></td>
                     <td><span v-text="index+1"></span></td>
@@ -56,17 +56,17 @@
                     <td><span v-text="message.content"></span></td>
                     <td>
                         <a href="#">修改</a>&nbsp;&nbsp;&nbsp;
-                        <a href="file.html">删除</a>
+                        <a href="#" @click="deleteMessage(message.id)">删除</a>
                     </td>
                 </tr>
 
                 </tbody>
             </table>
             <div class='page fix'>
-                共 <b>4</b> 条
+                共 <b><span v-text="pager.total"></span></b> 条
                 <a href='###' class='first'>首页</a>
                 <a href='###' class='pre'>上一页</a>
-                当前第<span>1/1</span>页
+                当前第<span v-text="pager.pageNum +'/'+ pager.pages"></span>页
                 <a href='###' class='next'>下一页</a>
                 <a href='###' class='last'>末页</a>
                 跳至&nbsp;<input type='text' value='1' class='allInput w28'/>&nbsp;页&nbsp;
@@ -80,7 +80,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            messages: [],
+            pager:{},
             bos: [],
             checkAll: false,
             param: {
@@ -93,7 +93,7 @@
             checkAllChange: function () {
                 var that = this;
                 if (this.checkAll) {
-                    this.messages.forEach(function (value) {
+                    this.pager.list.forEach(function (value) {
                         that.bos.push(value.id)
                     })
                 } else {
@@ -103,6 +103,9 @@
             doSerch: function () {
                 this.param.pageNo = 1;
                 http(this.param);
+            },
+            deleteMessage:function(id){
+                doDel(id)
             }
         },
         created: function () {
@@ -126,10 +129,77 @@
             success: function (data, textStatus, jqXHR) {
                 if (data.code === 200) {
                     app.$data.param.pageNo ++;
-                    app.$data.messages = data.data;
+                    app.$data.pager = data.data;
                     console.log(data);
                     console.log(textStatus);
-                    console.log(app.$data.messages);
+                } else {
+                    console.log("请求失败了");
+                }
+
+            },
+            error: function (xhr, textStatus) {
+                console.log('错误');
+                console.log(xhr);
+                console.log(textStatus);
+            },
+            complete: function () {
+                console.log('结束');
+            }
+        })
+    }
+    function doDel(idp){
+        $.ajax({
+            url: '/chat/deleteOne',
+            type: 'POST', //GET
+            async: true,    //或false,是否异步
+            timeout: 5000,    //超时时间
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            data:JSON.stringify({
+                id:idp
+            }),
+            beforeSend: function (xhr) {
+                console.log(xhr);
+                console.log('发送前');
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.code === 200) {
+                    app.$data.param.pageNo ++;
+                    app.$data.pager = data.data;
+                    window.location.reload();
+                } else {
+                    console.log("请求失败了");
+                }
+
+            },
+            error: function (xhr, textStatus) {
+                console.log('错误');
+                console.log(xhr);
+                console.log(textStatus);
+            },
+            complete: function () {
+                console.log('结束');
+            }
+        })
+    }
+    function dodeleteBatch(){
+        $.ajax({
+            url: '/chat/deleteBatch',
+            type: 'POST', //GET
+            async: true,    //或false,是否异步
+            timeout: 5000,    //超时时间
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            data:JSON.stringify(app.bos),
+            beforeSend: function (xhr) {
+                console.log(xhr);
+                console.log('发送前');
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.code === 200) {
+                    app.$data.param.pageNo ++;
+                    app.$data.pager = data.data;
+                    window.location.reload();
                 } else {
                     console.log("请求失败了");
                 }

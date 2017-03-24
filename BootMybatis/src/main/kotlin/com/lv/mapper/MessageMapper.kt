@@ -10,4 +10,8 @@ import org.apache.ibatis.annotations.Param
  */
 interface MessageMapper {
     fun findAll(@Param("command") command: String?, @Param("description") description: String?): List<Message>
+
+    fun deleteOne(id:Int):Int
+
+    fun deleteBatch(ids:List<Int>):Int
 }

@@ -10,6 +10,7 @@ enum class ResultEnum(val code:Int,val msg:String) {
     SUCCESS(200,"操作成功"),
     EMPTY(100,"不能为空"),
     SHORT(101,"长度不够"),
+    ERROR(102,"参数错误"),
 
 
 }

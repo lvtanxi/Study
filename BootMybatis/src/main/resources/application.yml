@@ -46,6 +46,11 @@ pagehelper:
     params: count=countSql
     offset-as-page-num: true
     row-bounds-with-count: true
+logging:
+  config: classpath:logback.xml
+
+
+
 
 
 

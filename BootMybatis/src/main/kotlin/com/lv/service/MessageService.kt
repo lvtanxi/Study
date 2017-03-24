@@ -9,4 +9,8 @@ import com.lv.model.Message
  */
 interface MessageService {
     fun findAll(command:String?, description:String?,pageNo:Int=1):List<Message>
+
+    fun deleteOne( id: Any?):Int
+
+    fun deleteBatch(ids:List<Int>):Int
 }

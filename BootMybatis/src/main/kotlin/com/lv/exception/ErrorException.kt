@@ -7,6 +7,6 @@ import com.lv.enums.ResultEnum
  * Time: 16:23
  * Description:自定义Exception
  */
-class ErrorException constructor(val res: ResultEnum) : RuntimeException(res.msg){
+class ErrorException constructor(res: ResultEnum) : RuntimeException(res.msg){
     val code:Int = res.code
 }

@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-    <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lv.mapper.MessageMapper">
-<select id="findAll" resultType="com.lv.model.Message" parameterType="java.lang.String">
-    SELECT
-    id,
-    command,
-    content,
-    description
-    FROM message
-    <where>
-        <if test="command!=null and command!=''">
-            AND  command LIKE CONCAT('%',#{command},'%')
-        </if>
-        <if test="description!=null and description!=''">
-            AND   description LIKE CONCAT('%',#{description},'%')
-        </if>
-    </where>
-</select>
+    <select id="findAll" resultType="com.lv.model.Message" parameterType="java.lang.String">
+        SELECT
+        id,
+        command,
+        content,
+        description
+        FROM message
+        <where>
+            <if test="command!=null and command!=''">
+                AND command LIKE CONCAT('%',#{command},'%')
+            </if>
+            <if test="description!=null and description!=''">
+                AND description LIKE CONCAT('%',#{description},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="deleteOne" parameterType="int">
+        DELETE FROM message
+        WHERE id = #{id}
+    </delete>
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM message
+        WHERE id in(
+            <foreach collection="list" item="item" separator=",">
+                #{item}
+            </foreach>
+        )
+    </delete>
 </mapper>
