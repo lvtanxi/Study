@@ -19,7 +19,6 @@ class HttpBasicAuthInterceptor :HandlerInterceptor{
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, any: Any?): Boolean {
         //设置字符编码
         request?.characterEncoding="utf-8"
-        println(">>preHandle>>")
         val attribute = request?.session?.getAttribute("user")
         if(attribute!=null)
             println("login user id is $attribute")
@@ -30,13 +29,11 @@ class HttpBasicAuthInterceptor :HandlerInterceptor{
      * 可以用ModelAndView来改变视图
      */
     override fun postHandle(request: HttpServletRequest?, response: HttpServletResponse?, any: Any?, modelAndView: ModelAndView?) {
-        println(">>postHandle>>")
     }
 
     /**
      * 请求结束的时候调用
      */
     override fun afterCompletion(request: HttpServletRequest?, response: HttpServletResponse?, any: Any?, exception: Exception?) {
-        println(">>afterCompletion>>")
     }
 }

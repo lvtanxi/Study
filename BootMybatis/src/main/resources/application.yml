@@ -21,6 +21,13 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+  thymeleaf: # 配置thymeleaf不然有問題
+    content-type: text/html
+    cache: false
+    mode: LEGACYHTML5
+    encoding: utf-8
+
+
 
 mybatis:
   type-aliases-package: com.lv.model
@@ -29,6 +36,16 @@ mybatis:
     use-generated-keys: true
     use-column-label: true
     map-underscore-to-camel-case: true
+
+
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+    offset-as-page-num: true
+    row-bounds-with-count: true
 
 
 

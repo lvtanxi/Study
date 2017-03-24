@@ -12,14 +12,11 @@ import java.lang.Exception
  */
 class TestAuthInterceptor :WebRequestInterceptor{
     override fun preHandle(p0: WebRequest?) {
-        println("TestAuthInterceptor>>preHandle>>")
     }
 
     override fun postHandle(p0: WebRequest?, p1: ModelMap?) {
-        println("TestAuthInterceptor>>postHandle>>")
     }
 
     override fun afterCompletion(p0: WebRequest?, p1: Exception?) {
-        println("TestAuthInterceptor>>afterCompletion>>")
     }
 }

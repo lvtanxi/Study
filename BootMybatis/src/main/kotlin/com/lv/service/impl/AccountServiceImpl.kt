@@ -16,10 +16,8 @@ class AccountServiceImpl (val mAccountMapper: AccountMapper): AccountService {
     @Transactional
     override fun transfer(outUser: String, inUser: String, money: Double):Int {
         val updateCount = mAccountMapper.outMovney(outUser, money)
-        if(updateCount>0) {
-            val x = 1/0
+        if(updateCount>0)
             return mAccountMapper.inMovney(inUser, money)
-        }
         return 0
     }
 }
