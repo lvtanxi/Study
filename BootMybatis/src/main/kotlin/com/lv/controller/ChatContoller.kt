@@ -21,6 +21,9 @@ class ChatContoller(val mMessageService: MessageService) {
     @GetMapping(value = "list")
     fun list() = ModelAndView("list")
 
+    @GetMapping(value = "talk")
+    fun talk() = ModelAndView("talk")
+
     @GetMapping(value = "loadDatas")
     fun loadDatas(@RequestParam("command") command: String?, @RequestParam("description") description: String?, @RequestParam("pageNo") pageNo: Int): ResultDto {
         logger.info("this param={}", command + description)
@@ -38,4 +41,6 @@ class ChatContoller(val mMessageService: MessageService) {
         val updateCount = mMessageService.deleteBatch(ids)
         return ResultUtil.success(updateCount)
     }
+
+
 }

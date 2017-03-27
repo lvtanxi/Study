@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.mapper.CommandMapper">
+    <resultMap id="Command" type="com.lv.model.Command">
+        <id column="cid" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <collection property="contentList" ofType="com.lv.model.CommandContent" column="command_id"/>
+    </resultMap>
+    <select id="findAllCommand" resultMap="Command">
+        SELECT
+            co.id cid,
+            co.name,
+            co.description,
+            cc.content,
+            cc.id,
+            cc.command_id
+        FROM command co
+            INNER JOIN command_content cc
+                ON co.id = cc.command_id
+    </select>
+</mapper>

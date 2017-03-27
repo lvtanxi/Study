@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.mapper.CommandContentMapper">
+  <resultMap id="Content" type="com.lv.model.CommandContent">
+    <id column="id" jdbcType="INTEGER" property="id" javaType="int"/>
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="command_id" jdbcType="INTEGER" property="commandId" />
+  </resultMap>
+
+</mapper>
