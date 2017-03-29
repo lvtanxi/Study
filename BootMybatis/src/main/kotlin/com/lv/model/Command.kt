@@ -5,4 +5,4 @@ package com.lv.model
  * Time: 11:01
  * Description:
  */
-data class Command (var id:Integer,var name:String?,var description:String?,var contentList:List<CommandContent>?)
+data class Command (var id:Int?,var name:String?,var description:String?,var contentList:List<CommandContent>?)

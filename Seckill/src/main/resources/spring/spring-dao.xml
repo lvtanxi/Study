@@ -10,7 +10,7 @@
         <property name="locations" value="classpath*:jbdc.properties"/>
     </bean>
     <!--2：数据库连接池-->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+    <bean id="busiDataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <!-- 基本配置-->
         <property name="driverClassName" value="${driver}"/>
         <property name="url" value="${url}"/>
@@ -46,6 +46,25 @@
         <!-- 监控数据库 -->
         <!-- <property name="filters" value="stat" /> -->
         <property name="filters" value="mergeStat"/>
+    </bean>
+
+    <bean id="orderDataSource" class="com.alibaba.druid.pool.DruidDataSource"  parent="busiDataSource">
+        <description>订单数据源</description>
+        <property name="url" value="jdbc:mysql://localhost:3306/test" />
+    </bean>
+
+    <bean id="dataSource" class="org.seckill.datasource.DataSourceRouter" lazy-init="true">
+        <description>多数据源路由</description>
+        <property name="targetDataSources">
+            <map key-type="java.lang.String" value-type="javax.sql.DataSource">
+                <!-- write -->
+                <entry key="busi" value-ref="busiDataSource" />
+                <entry key="order" value-ref="orderDataSource" />
+            </map>
+        </property>
+        <!-- 默认数据源，如果未指定数据源 或者指定的数据源不存在的话 默认使用这个数据源 -->
+        <property name="defaultTargetDataSource" ref="busiDataSource" />
+
     </bean>
 
     <!-- 配置druid监控spring jdbc -->

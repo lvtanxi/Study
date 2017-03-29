@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.seckill.dao.CommandMapper">
+    <resultMap id="Command" type="org.seckill.entity.Command">
+        <id column="cid" jdbcType="INTEGER" javaType="java.lang.Integer" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name" javaType="java.lang.String"/>
+        <result column="description" jdbcType="VARCHAR" javaType="java.lang.String" property="description"/>
+        <collection property="mContents" ofType="org.seckill.entity.CommandContent" column="command_id">
+            <id column="id" jdbcType="INTEGER" property="id" javaType="int"/>
+            <result column="content" jdbcType="VARCHAR" property="content" />
+            <result column="command_id" jdbcType="INTEGER" property="commandId" />
+        </collection>
+    </resultMap>
+
+    <select id="findAllCommand" resultMap="Command">
+        SELECT
+        co.id cid,
+        co.name,
+        co.description,
+        cc.content,
+        cc.id
+        FROM command co
+        INNER JOIN command_content cc
+        ON co.id = cc.command_id
+    </select>
+</mapper>
