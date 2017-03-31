@@ -3,12 +3,14 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lv.mapper.MessageMapper">
-    <select id="findAll" resultType="com.lv.model.Message" parameterType="java.lang.String">
-        SELECT
+    <sql id="dd">
         id,
         command,
         content,
-        description
+        description</sql>
+    <select id="findAll" resultType="com.lv.model.Message" parameterType="java.lang.String">
+        SELECT
+        <include refid="dd"/>
         FROM message
         <where>
             <if test="command!=null and command!=''">
@@ -26,9 +28,21 @@
     <delete id="deleteBatch" parameterType="java.util.List">
         DELETE FROM message
         WHERE id in(
-            <foreach collection="list" item="item" separator=",">
-                #{item}
-            </foreach>
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
         )
     </delete>
+<!--    <update id="xx">
+        UPDATE message
+        <set>
+            <if test="command!=null and command!=''">
+                command=#{command}
+            </if>
+            <if test="description!=null and description!=''">
+                description =#{description}
+            </if>
+        </set>
+    </update>-->
+    <!--<trim prefix="xx" suffix="hh" prefixOverrides="and" suffixOverrides="where"></trim>-->
 </mapper>

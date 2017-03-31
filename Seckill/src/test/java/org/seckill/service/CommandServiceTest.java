@@ -21,14 +21,26 @@ import java.util.List;
 public class CommandServiceTest {
     @Autowired
     private CommandMapper mMapper;
+
     @Test
     public void findAllCommand() throws Exception {
         List<Command> allCommand = mMapper.findAllCommand();
-        if(null!=allCommand) {
+        if (null != allCommand) {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(allCommand);
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
+    }
+
+    @Test
+    public void insert() throws Exception {
+        Command command = new Command();
+        command.setDescription("测试");
+        command.setName("测试name");
+        mMapper.insert(command);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(command.getId());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
 }

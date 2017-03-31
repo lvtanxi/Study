@@ -24,4 +24,8 @@
         INNER JOIN command_content cc
         ON co.id = cc.command_id
     </select>
+    <!--这样做可以插入后返回插入的主键-->
+    <insert id="insert" parameterType="org.seckill.entity.Command" useGeneratedKeys="true" keyProperty="id">
+        INSERT IGNORE INTO command VALUES (DEFAULT ,#{name},#{description})
+    </insert>
 </mapper>

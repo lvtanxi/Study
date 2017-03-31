@@ -5,6 +5,7 @@ public class CommandContent {
 
     private String content;
 
+    private Integer commandId;
 
     public Integer getId() {
         return id;
@@ -20,6 +21,14 @@ public class CommandContent {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public Integer getCommandId() {
+        return commandId;
+    }
+
+    public void setCommandId(Integer commandId) {
+        this.commandId = commandId;
     }
 
     @Override

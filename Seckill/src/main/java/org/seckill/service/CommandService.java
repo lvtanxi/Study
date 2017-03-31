@@ -12,4 +12,11 @@ import java.util.List;
 public interface CommandService {
 
     List<Command> findAllCommand();
+
+    /**
+     * 新增并返回ID
+     * @param command
+     * @return
+     */
+    int insert(Command command);
 }

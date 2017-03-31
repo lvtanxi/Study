@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CommandMapper {
 
-  List<Command> findAllCommand();
+    List<Command> findAllCommand();
+
+    int insert(Command command);
 }

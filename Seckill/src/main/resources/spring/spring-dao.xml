@@ -103,6 +103,18 @@
                 <prop key="aggressiveLazyLoading">true</prop>
             </props>
         </property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <value>
+                            params=value1
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
     <!--4:配置扫码Dao接口包,动态实现Dao接口并注入到Spring容器中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

@@ -7,19 +7,17 @@
         <id column="cid" jdbcType="INTEGER" javaType="java.lang.Integer"/>
         <result column="name" jdbcType="VARCHAR" property="name" javaType="java.lang.String"/>
         <result column="description" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <collection property="contentList" ofType="com.lv.model.CommandContent" column="command_id">
+     <!--   <collection property="contentList" ofType="com.lv.model.CommandContent" column="command_id">
             <id column="id" jdbcType="INTEGER" property="id" javaType="int"/>
             <result column="content" jdbcType="VARCHAR" property="content" />
             <result column="command_id" jdbcType="INTEGER" property="commandId" />
-        </collection>
+        </collection>-->
     </resultMap>
     <select id="findAllCommand" resultMap="Command">
         SELECT
             co.id cid,
             co.name,
-            co.description,
-            cc.content,
-            cc.id
+            co.description
         FROM command co
             INNER JOIN command_content cc
                 ON co.id = cc.command_id
