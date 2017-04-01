@@ -1,5 +1,6 @@
 package org.seckill.web;
 
+import org.seckill.dto.Page;
 import org.seckill.dto.SeckillResult;
 import org.seckill.entity.Command;
 import org.seckill.service.CommandService;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,6 +30,14 @@ public class CommandController {
     @ResponseBody
     public SeckillResult<List<Command>> list() {
         List<Command> commands = mCommandService.findAllCommand();
+        return new SeckillResult<List<Command>>(true,commands);
+    }
+    @RequestMapping(value = "/listByPage", method = RequestMethod.GET)
+    @ResponseBody
+    public SeckillResult<List<Command>> listByPage() {
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("page",new Page());
+        List<Command> commands = mCommandService.findAllCommandByPage(map);
         return new SeckillResult<List<Command>>(true,commands);
     }
 }

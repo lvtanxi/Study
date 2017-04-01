@@ -12,17 +12,30 @@
             <result column="command_id" jdbcType="INTEGER" property="commandId" />
         </collection>
     </resultMap>
-
+    <sql id="base">
+        SELECT
+            co.id cid,
+            co.name,
+            co.description,
+            cc.content,
+            cc.id
+        FROM command co
+            INNER JOIN command_content cc
+                ON co.id = cc.command_id
+    </sql>
     <select id="findAllCommand" resultMap="Command">
         SELECT
-        co.id cid,
-        co.name,
-        co.description,
-        cc.content,
-        cc.id
+            co.id cid,
+            co.name,
+            co.description,
+            cc.content,
+            cc.id
         FROM command co
-        INNER JOIN command_content cc
-        ON co.id = cc.command_id
+            INNER JOIN command_content cc
+                ON co.id = cc.command_id
+    </select>
+    <select id="findAllCommandByPage" resultMap="Command">
+        <include refid="base"/>
     </select>
     <!--这样做可以插入后返回插入的主键-->
     <insert id="insert" parameterType="org.seckill.entity.Command" useGeneratedKeys="true" keyProperty="id">

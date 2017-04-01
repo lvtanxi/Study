@@ -5,6 +5,8 @@ import org.seckill.entity.CommandContent;
 import org.seckill.service.CommandContentService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -18,5 +20,9 @@ public class CommandContentServiceImpl implements CommandContentService {
     private CommandContentMapper mContentMapper;
     public void insert(CommandContent commandContent) {
         mContentMapper.insert(commandContent);
+    }
+
+    public int insertCommandContent(List<CommandContent> commandContents) {
+        return mContentMapper.insertCommandContent(commandContents);
     }
 }
