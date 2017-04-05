@@ -6,3 +6,4 @@ Seckill/target/
 BootMybatis/.mvn
 src/main/resources/static/
 src/main/resources/templates/
+out
