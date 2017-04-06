@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- MyBatis 一对一的两种配置方式-->
+<mapper namespace="com.lv.mapper.MyUserInfoMapper">
+    <resultMap id="baseUserInfo" type="com.lv.model.MyUserInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_info_message" property="userInfoMessage" jdbcType="VARCHAR"/>
+        <association property="myUser" column="user_id" javaType="com.lv.model.MyUser">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+            <result column="user_pass_world" property="userPassWorld" jdbcType="VARCHAR"/>
+            <result column="user_address" property="userAddress" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <select id="findAllMyUserInfo" resultType="com.lv.model.MyUserInfo">
+        SELECT
+            ui.id,
+            ui.user_info_message,
+            mu.id "myUser.id",
+            mu.user_address  "myUser.user_address",
+            mu.user_name  "myUser.user_name",
+            mu.user_pass_world  "myUser.user_pass_world"
+        FROM my_user_info ui
+            INNER JOIN my_user mu
+                ON ui.user_id = mu.id
+    </select>
+    <select id="findAllMyUserInfoMap" resultMap="baseUserInfo">
+        SELECT
+        ui.id,
+        ui.user_info_message,
+        mu.id ,
+        mu.user_address  ,
+        mu.user_name ,
+        mu.user_pass_world
+        FROM my_user_info ui
+        INNER JOIN my_user mu
+        ON ui.user_id = mu.id
+    </select>
+</mapper>

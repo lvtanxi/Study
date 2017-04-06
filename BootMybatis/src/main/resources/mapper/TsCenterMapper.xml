@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- MyBatis 多对多配置方式-->
+<mapper namespace="com.lv.mapper.TsCenterMapper">
+    <select id="findAllMessage" resultType="com.lv.model.TsCenter" parameterType="map">
+        SELECT
+            te.t_id          "teacher.t_id",
+            te.t_name        "teacher.t_name",
+            te.t_create_date "teacher.t_create_date",
+            st.s_id          "student.s_id",
+            st.s_name        "student.s_name ",
+            st.s_create_date "student.s_create_date"
+        FROM ts_center ts
+            INNER JOIN teacher te
+                ON ts.ts_tid = te.t_id
+            INNER JOIN student st
+                ON ts.ts_sid = st.s_id
+        <where>
+            <if test="date !=null ">
+                AND ST.s_create_date > #{date}
+            </if>
+        </where>
+    </select>
+</mapper>
