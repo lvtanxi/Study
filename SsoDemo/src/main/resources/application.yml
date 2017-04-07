@@ -1,0 +1,7 @@
+
+spring:
+    thymeleaf: # 配置thymeleaf不然有問題
+      content-type: text/html
+      cache: false
+      mode: LEGACYHTML5
+      encoding: utf-8
