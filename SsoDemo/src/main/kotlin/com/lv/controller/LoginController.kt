@@ -29,7 +29,7 @@ class LoginController{
         if (checkLogin) {
             val cookie = Cookie("ssocookie","ss0")
             //想多个域(同父域)共享cookie的话要这样做
-            //cookie.domain=".x.com"
+            cookie.domain="localhost"
             cookie.path="/"
             val response = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).response
             val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
