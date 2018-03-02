@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
 @MapperScan("com.lv.mapper")
-open class BootmybatisApplication {
+ class BootmybatisApplication {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {

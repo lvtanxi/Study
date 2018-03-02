@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Date: 2017-03-17
@@ -35,7 +36,8 @@ public class SeckillController {
     private SeckillService mSeckillService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model) {
+    public String list(HttpServletRequest servletRequest,Model model) {
+        System.out.println(servletRequest.getHeader("lvtanxi"));
         List<Seckill> seckillList = mSeckillService.getSeckillList();
         model.addAttribute("list", seckillList);
         return "list";
@@ -99,6 +101,13 @@ public class SeckillController {
     @RequestMapping(value ="/time/now",method = RequestMethod.GET)
     @ResponseBody
     public SeckillResult<Long> time(){
+        return new SeckillResult<Long>(true,new Date().getTime());
+    }
+
+
+    @RequestMapping(value ="/test",method = RequestMethod.GET)
+    @ResponseBody
+    public SeckillResult<Long> test(){
         return new SeckillResult<Long>(true,new Date().getTime());
     }
 

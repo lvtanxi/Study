@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 @ControllerAdvice
 class ExceptionHandle {
 
-    @ExceptionHandler(value = Exception::class)
+    @ExceptionHandler(value = [(Exception::class)])
     @ResponseBody
     fun handle(e:Exception):ResultDto{
             if (e is ErrorException)

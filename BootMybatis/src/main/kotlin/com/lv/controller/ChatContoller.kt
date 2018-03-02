@@ -21,7 +21,7 @@ class ChatContoller(val mMessageService: MessageService) {
     @GetMapping(value = "list")
     fun list() = ModelAndView("list")
 
-    @GetMapping(value = "talk")
+    @GetMapping("talk")
     fun talk() = ModelAndView("talk")
 
     @GetMapping(value = "loadDatas")
